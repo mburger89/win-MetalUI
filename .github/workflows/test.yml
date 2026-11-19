@@ -18,8 +18,7 @@ jobs:
         shell: powershell
         run: |
           $env:PATH = "$HOME\scoop\shims;$env:PATH"
-          scoop bucket add win-metalui $env:GITHUB_WORKSPACE
-          scoop install win-metalui/metalui
+          scoop install "$env:GITHUB_WORKSPACE\bucket\metalui.json"
       - name: Smoke test
         shell: powershell
         run: |
