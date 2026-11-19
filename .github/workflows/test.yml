@@ -1,0 +1,30 @@
+name: Test
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  install:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Scoop
+        shell: powershell
+        run: |
+          irm get.scoop.sh -outfile install.ps1
+          .\install.ps1 -RunAsAdmin
+          echo "$HOME\scoop\shims" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+      - name: Install metalui from the checkout
+        shell: powershell
+        run: |
+          $env:PATH = "$HOME\scoop\shims;$env:PATH"
+          scoop bucket add win-metalui $env:GITHUB_WORKSPACE
+          scoop install win-metalui/metalui
+      - name: Smoke test
+        shell: powershell
+        run: |
+          $env:PATH = "$HOME\scoop\shims;$env:PATH"
+          $v = (metalui --version | Out-String).Trim()
+          if ($v -ne "metalui 0.1.0") { throw "unexpected version: $v" }
+          metalui new Smoke
+          if (-not (Select-String -Path Smoke\Package.swift -Pattern "MetalUI.git" -Quiet)) { throw "Package.swift lacks MetalUI.git" }

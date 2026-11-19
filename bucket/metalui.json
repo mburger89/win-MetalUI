@@ -1,0 +1,27 @@
+{
+    "version": "0.1.0",
+    "description": "Command-line tool for MetalUI, a GPU-accelerated UI framework for Swift",
+    "homepage": "https://github.com/mburger89/MetalUI",
+    "license": "MIT",
+    "notes": "Building the apps that metalui creates needs a Swift toolchain: winget install Swift.Toolchain",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/mburger89/MetalUI/releases/download/v0.1.0/metalui-0.1.0-windows-x64.zip",
+            "hash": "9292f055233b9faee16e9c02bc6d166a4691fbe2df52f9760ccec26ada7807b0"
+        }
+    },
+    "bin": "metalui.exe",
+    "checkver": {
+        "github": "https://github.com/mburger89/MetalUI"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/mburger89/MetalUI/releases/download/v$version/metalui-$version-windows-x64.zip",
+                "hash": {
+                    "url": "$url.sha256"
+                }
+            }
+        }
+    }
+}
